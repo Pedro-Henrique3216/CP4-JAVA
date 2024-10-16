@@ -1,33 +1,20 @@
 package br.com.fiap.service;
 
-import br.com.fiap.db.dao.ClienteDao;
 import br.com.fiap.model.Cliente;
+import br.com.fiap.model.Seguro;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteService {
+public interface ClienteService {
 
-    private ClienteDao clienteDao;
+    void insertSeguro(Seguro seguro);
 
-    public ClienteService(ClienteDao clienteDao) {
-        this.clienteDao = clienteDao;
-    }
+    void alterarCliente(Cliente cliente);
 
-    public void salvarCliente(Cliente cliente) {
-        clienteDao.inserir(cliente);
-    }
+    void salvarCliente(Cliente cliente);
 
-    public void alterarCliente(Cliente cliente) {
-        clienteDao.alterar(cliente);
-    }
+    void excluirCliente(Cliente cliente);
 
-    public void excluirCliente(Cliente cliente) {
-        clienteDao.excluir(cliente.getId());
-    }
-
-    public List<Cliente> listar() {
-        return clienteDao.listar();
-    }
+    List<Cliente> listar();
 
 }
