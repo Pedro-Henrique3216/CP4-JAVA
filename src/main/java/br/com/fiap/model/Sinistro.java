@@ -3,22 +3,25 @@ package br.com.fiap.model;
 public class Sinistro {
 
     private Long id;
-    private Cliente cliente;
     private String descricao;
     private Double valor;
+    private Seguro seguro;
 
-    public Sinistro(Cliente cliente, String descricao, Double valor) {
-        this.cliente = cliente;
+    public Sinistro(String descricao, Double valor, Seguro seguro) {
+        verificaSePossivelSeguroCobrir(descricao);
         this.descricao = descricao;
         this.valor = valor;
+        this.seguro = seguro;
+    }
+
+    public void verificaSePossivelSeguroCobrir(String descricao) {
+        if(!seguro.getApolice().getCoberturas().contains(descricao)){
+            throw new RuntimeException("Seguro Não cobre esse sinistro");
+        }
     }
 
     public Long getId() {
         return id;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
     }
 
     public String getDescricao() {
