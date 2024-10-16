@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SeguroService {
 
-    SeguroDao seguroDao;
+    private SeguroDao seguroDao;
 
     public SeguroService(SeguroDao seguroDao) {
         this.seguroDao = seguroDao;

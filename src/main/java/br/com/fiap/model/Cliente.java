@@ -80,6 +80,10 @@ public class Cliente {
         return nome;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public String getCpf() {
         return cpf;
     }
@@ -107,6 +111,8 @@ public class Cliente {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public void setEmail(String email) {this.email = email;}
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
