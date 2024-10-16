@@ -2,17 +2,11 @@ package br.com.fiap.model;
 
 import java.time.LocalDate;
 
-public interface Seguro {
+public class Seguro {
 
-    String tipoSeguro();
+    private Long id;
+    private TipoSeguro tipo;
+    private Apolice apolice;
+    private LocalDate data;
 
-    Double valorCobertura();
-
-    Apolice getApolice();
-
-    StatusSeguro getStatus();
-
-    void setStatus(StatusSeguro status);
-
-    void setDataInivio(LocalDate dataInicio);
 }
