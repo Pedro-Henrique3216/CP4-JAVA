@@ -31,6 +31,10 @@ public class Pagamento {
         }
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setStatusPagamento(StatusPagamento statusPagamento) {
         this.statusPagamento = statusPagamento;
     }

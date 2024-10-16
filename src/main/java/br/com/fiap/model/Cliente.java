@@ -13,7 +13,6 @@ public class Cliente {
     private String cpf;
     private String telefone;
     private LocalDate dataNascimento;
-    private List<Seguro> seguros = new ArrayList<>();
 
     public Cliente(String nome, String email, String cpf, String telefone, LocalDate dataNascimento) {
         this.nome = nome;
@@ -104,26 +103,5 @@ public class Cliente {
         return dataNascimento;
     }
 
-    public List<Seguro> getSeguros() {
-        return seguros;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setEmail(String email) {this.email = email;}
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public void setSeguros(List<Seguro> seguros) {
-        this.seguros = seguros;
-    }
 }
 

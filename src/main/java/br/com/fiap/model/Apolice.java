@@ -1,25 +1,33 @@
 package br.com.fiap.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Apolice {
-    private String numero;
-    private Seguro seguro;
-    private Double valor;
+    private Long id;
+    private Cliente cliente;
+    private String coberturas;
 
-    public Apolice(String numero, Seguro seguro, double valor) {
-        this.numero = numero;
-        this.seguro = seguro;
-        this.valor = valor;
+    public Apolice(Long id, Cliente cliente, String coberturas) {
+        this.id = id;
+        this.cliente = cliente;
+        this.coberturas = coberturas;
     }
 
-    public String getNumero() {
-        return numero;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Seguro getSeguro() {
-        return seguro;
+    public List<String> getCoberturas() {
+        String[] coberturasArray = coberturas.split(",");
+        for (int i = 0; i < coberturasArray.length; i++) {
+            coberturasArray[i] = coberturasArray[i].trim();
+        }
+        return Arrays.asList(coberturasArray);
     }
 
-    public double getValor() {
-        return valor;
+    public Cliente getCliente() {
+        return cliente;
     }
+
 }
