@@ -8,8 +8,7 @@ public class Apolice {
     private Cliente cliente;
     private String coberturas;
 
-    public Apolice(Long id, Cliente cliente, String coberturas) {
-        this.id = id;
+    public Apolice(Cliente cliente, String coberturas) {
         this.cliente = cliente;
         this.coberturas = coberturas;
     }
@@ -18,7 +17,15 @@ public class Apolice {
         this.id = id;
     }
 
-    public List<String> getCoberturas() {
+    public String getCoberturas() {
+        return coberturas;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public List<String> todasCoberturas() {
         String[] coberturasArray = coberturas.split(",");
         for (int i = 0; i < coberturasArray.length; i++) {
             coberturasArray[i] = coberturasArray[i].trim();

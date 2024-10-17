@@ -8,8 +8,8 @@ public interface SeguroService {
 
     void insert(Seguro seguro);
     void update(Seguro seguro);
-    void delete(Seguro seguro);
-    Seguro findById(int id);
+    void delete(Long id);
+    Seguro findById(Long id);
     List<Seguro> findAll();
 
 }

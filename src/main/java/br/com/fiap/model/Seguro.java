@@ -1,7 +1,5 @@
 package br.com.fiap.model;
 
-import java.time.LocalDate;
-
 public class Seguro {
 
     private Long id;
@@ -15,6 +13,22 @@ public class Seguro {
         this.apolice = apolice;
         this.valorCobertura = valorCobertura;
         this.premio = premio;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public TipoSeguro getTipo() {
+        return tipo;
+    }
+
+    public Double getValorCobertura() {
+        return valorCobertura;
+    }
+
+    public Double getPremio() {
+        return premio;
     }
 
     public void setId(Long id) {

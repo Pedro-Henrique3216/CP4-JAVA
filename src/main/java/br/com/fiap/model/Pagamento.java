@@ -31,6 +31,27 @@ public class Pagamento {
         }
     }
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public Seguro getSeguro() {
+        return seguro;
+    }
+
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public LocalDate getDataPagamento() {
+        return dataPagamento;
+    }
+
+    public TipoPagamento getTipoPagamento() {
+        return tipoPagamento;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -41,5 +62,9 @@ public class Pagamento {
 
     public StatusPagamento getStatusPagamento() {
         return statusPagamento;
+    }
+
+    public void setDataPagamento(LocalDate dataPagamento) {
+        this.dataPagamento = dataPagamento;
     }
 }
