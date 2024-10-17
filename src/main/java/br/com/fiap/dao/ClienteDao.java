@@ -1,4 +1,4 @@
-package br.com.fiap.db.dao;
+package br.com.fiap.dao;
 
 import br.com.fiap.model.Cliente;
 

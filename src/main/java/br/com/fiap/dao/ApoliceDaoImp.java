@@ -1,35 +1,45 @@
-package br.com.fiap.db.dao;
+package br.com.fiap.dao;
 
+import br.com.fiap.model.Apolice;
 import br.com.fiap.model.Cliente;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteDaoImp implements ClienteDao {
+public class ApoliceDaoImp implements ApoliceDao{
 
     private Connection conn;
 
-    public ClienteDaoImp(Connection conn) {
+    private static ApoliceDaoImp apoliceDaoImp;
+
+    private ApoliceDaoImp(Connection conn){
         this.conn = conn;
     }
 
+    public static synchronized ApoliceDaoImp getInstance(Connection conn){
+       if(apoliceDaoImp == null){
+           apoliceDaoImp = new ApoliceDaoImp(conn);
+       }
+       return apoliceDaoImp;
+    }
+
+
     @Override
-    public void inserir(Cliente cliente) {
+    public void inserir(Apolice apolice) {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("""
-                insert into cliente(nome, cpf, telefone, dt_nascimento, email) values(?, ?, ?, ?, ?, ?)
-            """, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, cliente.getNome());
-            ps.setString(2, cliente.getCpf());
-            ps.setString(3, cliente.getTelefone());
+                insert into apolices(cliente_id, coberturas) values(?, ?)
+            """, new String[] {"id"});
+            ps.setLong(1, apolice.getCliente().getId());
+            ps.setString(2, apolice.getCoberturas());
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()){
                     Long id = rs.getLong(1);
-                    cliente.setId(id);
+                    apolice.setId(id);
                 }
                 rs.close();
             } else {
@@ -42,18 +52,16 @@ public class ClienteDaoImp implements ClienteDao {
     }
 
     @Override
-    public void alterar(Cliente cliente) {
+    public void alterar(Apolice apolice) {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("""
-                update cliente
-                    set nome = ?, dt_nascimento = ?, telefone = ?, email = ?
+                update apolices
+                    set coberturas = ?
                 where id = ?
             """);
-            ps.setString(1, cliente.getNome());
-            ps.setDate(2, Date.valueOf(cliente.getDataNascimento()));
-            ps.setString(3, cliente.getTelefone());
-            ps.setLong(4, cliente.getId());
+            ps.setString(1, apolice.getCoberturas());
+            ps.setLong(2, apolice.getId());
 
             ps.executeUpdate();
 
@@ -69,7 +77,7 @@ public class ClienteDaoImp implements ClienteDao {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("""
-                delete cliente where id = ?
+                delete apolices where id = ?
             """);
             ps.setLong(1, id);
 
@@ -83,30 +91,36 @@ public class ClienteDaoImp implements ClienteDao {
     }
 
     @Override
-    public List<Cliente> listar() {
-        List<Cliente> clientes = new ArrayList<>();
+    public List<Apolice> listar() {
+        List<Apolice> apolices = new ArrayList<>();
         Statement s = null;
         try {
             s = conn.createStatement();
             ResultSet rs = s.executeQuery("""
-                select * from cliente
+                select a.*, c.* from apolices a inner join clientes c on (a.cliente_id = c.id)
             """);
             while (rs.next()){
-                clientes.add(instaciaCliente(rs));
+                apolices.add(instaciaApolice(rs));
             }
             s.close();
             rs.close();
-            return clientes;
+            return apolices;
         } catch (SQLException e){
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    private Apolice instaciaApolice(ResultSet rs) throws SQLException {
+        Apolice apolice = new Apolice(instaciaCliente(rs), rs.getString("coberturas"));
+        apolice.setId(rs.getLong("id"));
+        return apolice;
     }
 
     private Cliente instaciaCliente(ResultSet rs) throws SQLException {
         Cliente cliente = new Cliente(rs.getString("nome"), rs.getString("email"),
                 rs.getString("cpf"), rs.getString("telefone"),
                 rs.getDate("dt_nascimento").toLocalDate());
-        cliente.setId(rs.getLong("id"));
+        cliente.setId(rs.getLong("cliente_id"));
         return cliente;
     }
 }
