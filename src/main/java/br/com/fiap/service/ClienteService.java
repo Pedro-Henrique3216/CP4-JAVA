@@ -7,13 +7,11 @@ import java.util.List;
 
 public interface ClienteService {
 
-    void insertSeguro(Seguro seguro);
+    void insertCliete(Cliente cliente);
 
     void alterarCliente(Cliente cliente);
 
-    void salvarCliente(Cliente cliente);
-
-    void excluirCliente(Cliente cliente);
+    void excluirCliente(Long id);
 
     List<Cliente> listar();
 
