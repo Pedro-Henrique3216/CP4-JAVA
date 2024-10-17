@@ -1,4 +1,4 @@
-package br.com.fiap.db;
+package br.com.fiap.config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
