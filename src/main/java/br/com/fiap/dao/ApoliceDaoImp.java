@@ -1,12 +1,12 @@
 package br.com.fiap.dao;
 
 import br.com.fiap.model.Apolice;
-import br.com.fiap.model.Cliente;
-import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static br.com.fiap.model.InstanciaObjetosDeOutrasTabelas.instaciaCliente;
 
 public class ApoliceDaoImp implements ApoliceDao{
 
@@ -118,11 +118,4 @@ public class ApoliceDaoImp implements ApoliceDao{
         return apolice;
     }
 
-    private Cliente instaciaCliente(ResultSet rs) throws SQLException {
-        Cliente cliente = new Cliente(rs.getString("nome"), rs.getString("email"),
-                rs.getString("cpf"), rs.getString("telefone"),
-                rs.getDate("dt_nascimento").toLocalDate());
-        cliente.setId(rs.getLong("cliente_id"));
-        return cliente;
-    }
 }

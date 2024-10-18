@@ -6,6 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static br.com.fiap.model.InstanciaObjetosDeOutrasTabelas.instanciaSeguro;
+
 public class SinistroDaoImp implements SinistroDao{
 
     private Connection conn;
@@ -118,24 +120,5 @@ public class SinistroDaoImp implements SinistroDao{
         return sinistro;
     }
 
-    private Seguro instanciaSeguro(ResultSet rs) throws SQLException {
-        Seguro seguro = new Seguro(TipoSeguro.valueOf(rs.getString("tipo_seguro")), instaciaApolice(rs),
-                rs.getDouble("vl_cobertura"), rs.getDouble("premio"), StatusSeguro.valueOf(rs.getString("status_seguro")));
-        seguro.setId(rs.getLong("seguro_id"));
-        return seguro;
-    }
 
-    private Apolice instaciaApolice(ResultSet rs) throws SQLException {
-        Apolice apolice = new Apolice(instaciaCliente(rs), rs.getString("coberturas"));
-        apolice.setId(rs.getLong("apolice_id"));
-        return apolice;
-    }
-
-    private Cliente instaciaCliente(ResultSet rs) throws SQLException {
-        Cliente cliente = new Cliente(rs.getString("nome"), rs.getString("email"),
-                rs.getString("cpf"), rs.getString("telefone"),
-                rs.getDate("dt_nascimento").toLocalDate());
-        cliente.setId(rs.getLong("cliente_id"));
-        return cliente;
-    }
 }
