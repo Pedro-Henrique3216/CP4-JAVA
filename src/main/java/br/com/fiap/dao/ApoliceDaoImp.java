@@ -2,6 +2,7 @@ package br.com.fiap.dao;
 
 import br.com.fiap.model.Apolice;
 import br.com.fiap.model.Cliente;
+import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -91,14 +92,15 @@ public class ApoliceDaoImp implements ApoliceDao{
     }
 
     @Override
-    public List<Apolice> listar() {
+    public List<Apolice> listar(Long clienteId) {
         List<Apolice> apolices = new ArrayList<>();
-        Statement s = null;
+        PreparedStatement s = null;
         try {
-            s = conn.createStatement();
-            ResultSet rs = s.executeQuery("""
-                select a.*, c.* from apolices a inner join clientes c on (a.cliente_id = c.id)
+            s = conn.prepareStatement("""
+                select a.*, c.* from apolices a inner join clientes c on (a.cliente_id = c.id) where a.cliente_id = ?
             """);
+            s.setLong(1, clienteId);
+            ResultSet rs = s.executeQuery();
             while (rs.next()){
                 apolices.add(instaciaApolice(rs));
             }

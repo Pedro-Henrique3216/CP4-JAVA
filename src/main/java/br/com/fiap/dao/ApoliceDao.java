@@ -10,5 +10,5 @@ public interface ApoliceDao {
     void inserir(Apolice apolice);
     void alterar(Apolice apolice);
     void excluir(Long id);
-    List<Apolice> listar();
+    List<Apolice> listar(Long clienteId);
 }

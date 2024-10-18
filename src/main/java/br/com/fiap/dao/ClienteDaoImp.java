@@ -1,7 +1,6 @@
 package br.com.fiap.dao;
 
 import br.com.fiap.model.Cliente;
-import br.com.fiap.model.Seguro;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class ClienteDaoImp implements ClienteDao {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("""
-                update cliente
+                update clientes
                     set nome = ?, dt_nascimento = ?, telefone = ?
                 where id = ?
             """);
@@ -81,7 +80,7 @@ public class ClienteDaoImp implements ClienteDao {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("""
-                delete cliente where id = ?
+                delete clientes where id = ?
             """);
             ps.setLong(1, id);
 
@@ -101,7 +100,7 @@ public class ClienteDaoImp implements ClienteDao {
         try {
             s = conn.createStatement();
             ResultSet rs = s.executeQuery("""
-                select * from cliente
+                select * from clientes
             """);
             while (rs.next()){
                 clientes.add(instaciaCliente(rs));

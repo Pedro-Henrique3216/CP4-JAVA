@@ -1,11 +1,13 @@
 package br.com.fiap.dao;
 
 import br.com.fiap.model.*;
+import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PagamentoDaoImp implements PagamentoDao{
 
@@ -30,12 +32,13 @@ public class PagamentoDaoImp implements PagamentoDao{
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("""
-                insert into pagamentos(seguro_id, tipo_pagamento, dt_criacao, status) values(?, ?, ?, ?)
-            """, Statement.RETURN_GENERATED_KEYS);
+                insert into pagamentos(seguro_id, tipo_pagamento, data_criacao, status, vl_pagamento) values(?, ?, ?, ?, ?)
+            """, new String[] {"id"});
             ps.setLong(1, pagamento.getSeguro().getId());
             ps.setString(2, String.valueOf(pagamento.getTipoPagamento()));
-            ps.setDate(3, Date.valueOf(pagamento.getDataPagamento()));
+            ps.setDate(3, Date.valueOf(pagamento.getDataCriacao()));
             ps.setString(4, String.valueOf(pagamento.getStatusPagamento()));
+            ps.setDouble(5, pagamento.getValorTotal());
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
@@ -93,14 +96,19 @@ public class PagamentoDaoImp implements PagamentoDao{
     }
 
     @Override
-    public List<Pagamento> listar() {
+    public List<Pagamento> listar(Long idSeguro) {
         List<Pagamento> pagamentos = new ArrayList<>();
-        Statement s = null;
+        PreparedStatement s = null;
         try {
-            s = conn.createStatement();
-            ResultSet rs = s.executeQuery("""
-                select p.*, s.*, a.*, c.* from pagamentos p inner join seguros s inner join apolices a on (s.apolice_id = a.id) inner join clientes c on(a.cliente_id = c.id)
+            s = conn.prepareStatement("""
+                select p.*, s.*, a.*, c.* from pagamentos p 
+                inner join seguros s on (p.seguro_id = s.id)
+                inner join apolices a on (s.apolice_id = a.id) 
+                inner join clientes c on(a.cliente_id = c.id)
+                where p.seguro_id = ?
             """);
+            s.setLong(1, idSeguro);
+            ResultSet rs = s.executeQuery();
             while (rs.next()){
                 pagamentos.add(instanciaPagamento(rs));
             }
@@ -112,17 +120,47 @@ public class PagamentoDaoImp implements PagamentoDao{
         }
     }
 
+    @Override
+    public Optional<Pagamento> buscarPorId(Long id) {
+        PreparedStatement s = null;
+        Optional<Pagamento> pagamento = Optional.empty();
+        try {
+            s = conn.prepareStatement("""
+                select p.*, s.*, a.*, c.* from pagamentos p 
+                inner join seguros s on (p.seguro_id = s.id)
+                inner join apolices a on (s.apolice_id = a.id) 
+                inner join clientes c on(a.cliente_id = c.id)
+                where p.id = ?
+            """);
+            s.setLong(1, id);
+            ResultSet rs = s.executeQuery();
+            while (rs.next()){
+                pagamento = Optional.of(instanciaPagamento(rs));
+            }
+            s.close();
+            rs.close();
+            return pagamento;
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+
     private Pagamento instanciaPagamento(ResultSet rs) throws SQLException {
-        Pagamento pagamento = new Pagamento(instanciaSeguro(rs), TipoPagamento.valueOf(rs.getString("tipo_pagamento")), rs.getDate("dt_criacao").toLocalDate());
+        Pagamento pagamento = new Pagamento(instanciaSeguro(rs), TipoPagamento.valueOf(rs.getString("tipo_pagamento")),
+                rs.getDate("data_criacao").toLocalDate(), rs.getDouble("vl_pagamento"));
         pagamento.setId(rs.getLong("id"));
         pagamento.setStatusPagamento(StatusPagamento.valueOf(rs.getString("status")));
-        pagamento.setDataPagamento(rs.getDate("dt_pagamento").toLocalDate());
+        if(rs.getDate("dt_pagamento") != null){
+            pagamento.setDataPagamento(rs.getDate("dt_pagamento").toLocalDate());
+        }
+
         return pagamento;
     }
 
     private Seguro instanciaSeguro(ResultSet rs) throws SQLException {
         Seguro seguro = new Seguro(TipoSeguro.valueOf(rs.getString("tipo_seguro")), instaciaApolice(rs),
-                rs.getDouble("vl_cobertura"), rs.getDouble("premio"));
+                rs.getDouble("vl_cobertura"), rs.getDouble("premio"), StatusSeguro.valueOf(rs.getString("status_seguro")));
         seguro.setId(rs.getLong("seguro_id"));
         return seguro;
     }
