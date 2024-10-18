@@ -1,6 +1,5 @@
 package br.com.fiap.service;
 
-import br.com.fiap.dao.PagamentoDao;
 import br.com.fiap.dao.SeguroDao;
 import br.com.fiap.model.*;
 

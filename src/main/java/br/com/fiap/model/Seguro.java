@@ -55,7 +55,7 @@ public class Seguro {
         return "Seguro{" +
                 "id=" + id +
                 ", tipo=" + tipo +
-                ", apolice=" + apolice +
+                ", apolice=" + apolice.getCoberturas() + " " + apolice.getId() +
                 ", valorCobertura=" + valorCobertura +
                 ", premio=" + premio +
                 ", status=" + status +

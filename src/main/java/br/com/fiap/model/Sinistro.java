@@ -51,7 +51,7 @@ public class Sinistro {
                 "id=" + id +
                 ", descricao='" + descricao + '\'' +
                 ", valor=" + valor +
-                ", seguro=" + seguro +
+                ", seguro=" + seguro.getId() +
                 '}';
     }
 }

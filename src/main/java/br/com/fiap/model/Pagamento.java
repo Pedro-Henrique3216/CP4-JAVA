@@ -79,7 +79,7 @@ public class Pagamento {
     public String toString() {
         return "Pagamento{" +
                 "id=" + id +
-                ", seguro=" + seguro +
+                ", seguro=" + seguro.getId() +
                 ", dataCriacao=" + dataCriacao +
                 ", dataPagamento=" + dataPagamento +
                 ", tipoPagamento=" + tipoPagamento +

@@ -65,7 +65,10 @@ public class PagamentoDaoImp implements PagamentoDao{
                     set dt_pagamento = ?, tipo_pagamento = ?, status = ?
                 where id = ?
             """);
-            ps.setDate(1, Date.valueOf(pagamento.getDataPagamento()));
+            if (pagamento.getDataPagamento() != null) {
+                ps.setDate(1, Date.valueOf(pagamento.getDataPagamento()));
+            }
+            ps.setDate(1, null);
             ps.setString(2, String.valueOf(pagamento.getTipoPagamento()));
             ps.setString(3, String.valueOf(pagamento.getStatusPagamento()));
             ps.setLong(4, pagamento.getId());
