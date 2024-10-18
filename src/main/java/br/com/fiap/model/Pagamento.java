@@ -31,6 +31,7 @@ public class Pagamento {
             Period period = Period.between(dataCriacao, LocalDate.now());
             if(period.getDays() > 5){
                 statusPagamento = StatusPagamento.CANCELADO;
+                System.out.println("Cancelado");
             } else {
                 statusPagamento = StatusPagamento.APROVADO;
                 dataPagamento = LocalDate.now();

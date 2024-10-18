@@ -96,7 +96,7 @@ public class SinistroDaoImp implements SinistroDao{
         try {
             s = conn.prepareStatement("""
                 select si.*, s.*, a.*, c.* from sinistros si 
-                inner join seguros s 
+                inner join seguros s on(s.id = si.seguro_id)
                 inner join apolices a on (s.apolice_id = a.id) 
                 inner join clientes c on(a.cliente_id = c.id)
                 where si.seguro_id = ?
