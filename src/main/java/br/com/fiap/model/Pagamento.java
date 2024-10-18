@@ -11,12 +11,19 @@ public class Pagamento {
     private LocalDate dataPagamento;
     private TipoPagamento tipoPagamento;
     private StatusPagamento statusPagamento;
+    private Double valorTotal;
 
-    public Pagamento(Seguro seguro, TipoPagamento tipoPagamento, LocalDate dataCriacao) {
+    public Pagamento(Seguro seguro, TipoPagamento tipoPagamento, LocalDate dataCriacao, Double valorTotal) {
         this.seguro = seguro;
         this.dataCriacao = dataCriacao;
         this.tipoPagamento = tipoPagamento;
         this.statusPagamento = StatusPagamento.PENDENDE;
+        this.valorTotal = valorTotal;
+
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
     }
 
     public void pagar(){
@@ -66,5 +73,18 @@ public class Pagamento {
 
     public void setDataPagamento(LocalDate dataPagamento) {
         this.dataPagamento = dataPagamento;
+    }
+
+    @Override
+    public String toString() {
+        return "Pagamento{" +
+                "id=" + id +
+                ", seguro=" + seguro +
+                ", dataCriacao=" + dataCriacao +
+                ", dataPagamento=" + dataPagamento +
+                ", tipoPagamento=" + tipoPagamento +
+                ", statusPagamento=" + statusPagamento +
+                ", valorTotal=" + valorTotal +
+                '}';
     }
 }

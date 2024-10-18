@@ -28,7 +28,7 @@ public class Apolice {
     public List<String> todasCoberturas() {
         String[] coberturasArray = coberturas.split(",");
         for (int i = 0; i < coberturasArray.length; i++) {
-            coberturasArray[i] = coberturasArray[i].trim();
+            coberturasArray[i] = coberturasArray[i].trim().toUpperCase();
         }
         return Arrays.asList(coberturasArray);
     }
@@ -37,4 +37,12 @@ public class Apolice {
         return cliente;
     }
 
+    @Override
+    public String toString() {
+        return "Apolice{" +
+                "id=" + id +
+                ", cliente=" + cliente +
+                ", coberturas='" + coberturas + '\'' +
+                '}';
+    }
 }
